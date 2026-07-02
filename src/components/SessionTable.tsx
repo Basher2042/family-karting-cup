@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { ExpandableAvatar } from "@/components/ExpandableAvatar";
 import type { RankedSessionResult } from "@/lib/championship";
 import { formatPoints } from "@/lib/championship";
 import { cx } from "@/lib/ui";
@@ -29,12 +29,11 @@ export function SessionTable({ results }: SessionTableProps) {
               <td className="px-3 py-4">
                 <div className="flex items-center gap-3">
                   {result.driver.avatar ? (
-                    <Image
+                    <ExpandableAvatar
                       src={result.driver.avatar}
                       alt={result.driver.name}
-                      width={40}
-                      height={40}
-                      className="size-10 rounded-md border border-white/10 object-cover"
+                      modalId={`session-avatar-${result.driverId}-${result.position}-${result.fastestLap ?? "no-lap"}`}
+                      size="sm"
                     />
                   ) : (
                     <span

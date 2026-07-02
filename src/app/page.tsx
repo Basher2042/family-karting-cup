@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { MetricCard } from "@/components/MetricCard";
 import { StandingsTable } from "@/components/StandingsTable";
@@ -25,10 +26,14 @@ export default function Home() {
           <p className="text-[0.65rem] font-black uppercase tracking-[0.28em] text-red-400">
             {championshipData.season} season
           </p>
-          <h1 className="mt-3 max-w-2xl text-4xl font-black uppercase leading-[0.92] tracking-normal text-white sm:text-7xl">
-            <span className="block">LC</span>
-            <span className="block">Karting Cup</span>
-          </h1>
+          <Image
+            src="/brand/lc-karting-cup-logo.png"
+            alt="LC Karting Cup"
+            width={620}
+            height={245}
+            priority
+            className="mt-4 h-auto w-full max-w-[21rem] object-contain sm:max-w-[28rem]"
+          />
           <p className="mt-4 max-w-xl text-sm font-medium leading-6 text-zinc-400 sm:text-base">
             {stats.completedRounds} of {championshipData.totalRounds} rounds completed.
             Best {championshipData.countedRounds} scores count, worst rounds drop.
