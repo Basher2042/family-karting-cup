@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Family Karting Cup
 
-## Getting Started
+Mobile-first Next.js app for a static, manually updated family karting championship.
 
-First, run the development server:
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+This app is Vercel-ready and uses the Next.js App Router with local static data only.
 
-To learn more about Next.js, take a look at the following resources:
+## Update race results
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Edit the data file:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```text
+src/data/championship.ts
+```
 
-## Deploy on Vercel
+Each completed round has three `session(...)` blocks. Add one `entry(...)` per driver:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```ts
+session("r10-1", [
+  entry("driver-1", "45.231"),
+  entry("driver-2", "45.588"),
+  entry("driver-3", "46.102"),
+  entry("driver-4", "46.490"),
+]),
+session("r10-2", [
+  entry("driver-1", "44.980"),
+  entry("driver-2", "45.101"),
+  entry("driver-3", "45.777"),
+  entry("driver-4", "46.020"),
+]),
+session("r10-3", [
+  entry("driver-2", "44.850"),
+  entry("driver-1", "45.010"),
+  entry("driver-3", "45.500"),
+  entry("driver-4", "45.810"),
+]),
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Then change the round status:
+
+```ts
+status: "completed",
+```
+
+The app automatically calculates:
+
+- session position points
+- fastest-lap bonus
+- penalties
+- Joker multiplier
+- event total
+- best 8 counted rounds
+- dropped rounds
+- championship standings
+- quick stats and awards
+
+## Add penalties
+
+Pass penalty codes as the third `entry(...)` argument:
+
+```ts
+entry("driver-2", "43.940", ["avoidableContact"])
+entry("driver-1", "44.704", ["causingSpin"])
+entry("driver-3", "44.222", ["dangerousDriving"], "Session disqualification")
+entry("driver-4", "44.040", ["repeatedTrackLimits"], "Fastest lap deleted")
+```
+
+Available penalty codes:
+
+- `avoidableContact`
+- `causingSpin`
+- `dangerousDriving`
+- `ignoredMarshal`
+- `repeatedTrackLimits`
+
+## Declare a Joker
+
+Add the driver id to the round:
+
+```ts
+jokerDriverIds: ["driver-2"],
+```
+
+A Joker doubles session points, fastest-lap bonus, and penalties for that driver in that round.
+
+## Debug scoring
+
+```bash
+npm run debug:scoring
+```
+
+This checks dropped rounds, Joker doubling, doubled Joker penalties, disqualification, and fastest-lap deletion.
