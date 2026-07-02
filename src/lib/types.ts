@@ -12,6 +12,7 @@ export type Driver = {
   name: string;
   shortName: string;
   color: string;
+  avatar?: string;
 };
 
 export type SessionEntry = {

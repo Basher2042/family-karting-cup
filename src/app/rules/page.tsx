@@ -24,7 +24,7 @@ export default function RulesPage() {
     <div>
       <PageHeader
         title="Rules"
-        meta="Family Karting Cup"
+        meta="LC Karting Cup"
         copy="The site calculates standings directly from these scoring rules."
       />
 

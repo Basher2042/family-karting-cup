@@ -26,7 +26,7 @@ export default function Home() {
             {championshipData.season} season
           </p>
           <h1 className="mt-3 max-w-2xl text-4xl font-black uppercase leading-[0.92] tracking-normal text-white sm:text-7xl">
-            <span className="block">Family</span>
+            <span className="block">LC</span>
             <span className="block">Karting Cup</span>
           </h1>
           <p className="mt-4 max-w-xl text-sm font-medium leading-6 text-zinc-400 sm:text-base">
@@ -77,7 +77,7 @@ export default function Home() {
             {[
               ["Wins", leader ? String(leader.roundWins) : "0"],
               ["Fastest", leader ? String(leader.fastestLaps) : "0"],
-              ["Joker", leader?.jokerRoundId ? `R${leader.jokerRoundId}` : "Unused"],
+              ["Joker", leader ? (leader.jokerRoundId ? `R${leader.jokerRoundId}` : "Unused") : "-"],
             ].map(([label, value]) => (
               <div key={label} className="min-w-0 rounded-md bg-white/[0.06] p-3">
                 <p className="truncate text-[0.55rem] font-black uppercase tracking-[0.12em] text-zinc-500">

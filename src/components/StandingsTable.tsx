@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { StandingRow } from "@/lib/championship";
 import { formatPoints } from "@/lib/championship";
 import { cx } from "@/lib/ui";
@@ -34,10 +35,20 @@ export function StandingsTable({ rows, compact = false }: StandingsTableProps) {
               </td>
               <td className="px-3 py-4">
                 <div className="flex items-center gap-3">
-                  <span
-                    className="h-9 w-1.5 rounded-full"
-                    style={{ backgroundColor: row.driver.color }}
-                  />
+                  {row.driver.avatar ? (
+                    <Image
+                      src={row.driver.avatar}
+                      alt={row.driver.name}
+                      width={44}
+                      height={44}
+                      className="size-11 rounded-md border border-white/10 object-cover"
+                    />
+                  ) : (
+                    <span
+                      className="h-9 w-1.5 rounded-full"
+                      style={{ backgroundColor: row.driver.color }}
+                    />
+                  )}
                   <div>
                     <p className="font-black uppercase text-white">{row.driver.name}</p>
                     <p className="text-xs font-bold text-zinc-500">

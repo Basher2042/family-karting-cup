@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Family Karting Cup",
-  description: "Mobile-first family karting championship tracker.",
+  title: "LC Karting Cup",
+  description: "Mobile-first karting championship tracker.",
 };
 
 export const viewport: Viewport = {

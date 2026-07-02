@@ -1,6 +1,6 @@
-# Family Karting Cup
+# LC Karting Cup
 
-Mobile-first Next.js app for a static, manually updated family karting championship.
+Mobile-first Next.js app for a static, manually updated karting championship.
 
 ## Run locally
 

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { RankedSessionResult } from "@/lib/championship";
 import { formatPoints } from "@/lib/championship";
 import { cx } from "@/lib/ui";
@@ -27,10 +28,20 @@ export function SessionTable({ results }: SessionTableProps) {
               <td className="px-3 py-4 text-2xl font-black text-white">{result.position}</td>
               <td className="px-3 py-4">
                 <div className="flex items-center gap-3">
-                  <span
-                    className="h-8 w-1.5 rounded-full"
-                    style={{ backgroundColor: result.driver.color }}
-                  />
+                  {result.driver.avatar ? (
+                    <Image
+                      src={result.driver.avatar}
+                      alt={result.driver.name}
+                      width={40}
+                      height={40}
+                      className="size-10 rounded-md border border-white/10 object-cover"
+                    />
+                  ) : (
+                    <span
+                      className="h-8 w-1.5 rounded-full"
+                      style={{ backgroundColor: result.driver.color }}
+                    />
+                  )}
                   <div>
                     <p className="font-black uppercase text-white">{result.driver.name}</p>
                     <p className="text-xs font-bold text-zinc-500">

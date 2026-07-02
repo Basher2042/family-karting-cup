@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { ReactNode } from "react";
 import { AppNav } from "@/components/AppNav";
 
@@ -13,17 +14,14 @@ export function AppShell({ children }: AppShellProps) {
       <header className="sticky top-0 z-40 border-b border-white/10 bg-[#07080c]/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
           <Link href="/" className="group flex items-center gap-3">
-            <span className="grid size-9 place-items-center rounded-md bg-red-500 text-base font-black text-white shadow-[0_0_24px_rgba(239,68,68,0.28)]">
-              K
-            </span>
-            <span className="leading-none">
-              <span className="block text-sm font-black uppercase tracking-[0.24em] text-white">
-                Family
-              </span>
-              <span className="block text-[0.62rem] font-bold uppercase tracking-[0.28em] text-zinc-500 group-hover:text-zinc-300">
-                Karting Cup
-              </span>
-            </span>
+            <Image
+              src="/brand/lc-karting-cup-logo.png"
+              alt="LC Karting Cup"
+              width={180}
+              height={120}
+              priority
+              className="h-12 w-36 object-contain object-center sm:h-14 sm:w-44"
+            />
           </Link>
           <AppNav variant="top" />
         </div>

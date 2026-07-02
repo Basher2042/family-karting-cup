@@ -1,12 +1,18 @@
 import type { ChampionshipData } from "@/lib/types";
 
 export const championshipData: ChampionshipData = {
-  name: "Family Karting Cup",
+  name: "LC Karting Cup",
   season: "2026",
   totalRounds: 10,
   countedRounds: 8,
   drivers: [
-    { id: "bash", name: "Bash", shortName: "BAS", color: "#ef4444" },
+    {
+      id: "bash",
+      name: "Bash",
+      shortName: "BAS",
+      color: "#ef4444",
+      avatar: "/drivers/bash.png",
+    },
     { id: "callum", name: "Callum", shortName: "CAL", color: "#f59e0b" },
     { id: "aajay", name: "Aajay", shortName: "AAJ", color: "#22c55e" },
     { id: "sanna", name: "Sanna", shortName: "SAN", color: "#38bdf8" },
