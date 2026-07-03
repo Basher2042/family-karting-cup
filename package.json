@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "debug:scoring": "tsx scripts/debug-scoring.ts"
+    "debug:scoring": "tsx scripts/debug-scoring.ts",
+    "debug:profiles": "tsx scripts/debug-driver-profiles.ts"
   },
   "dependencies": {
     "next": "16.2.10",

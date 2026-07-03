@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ExpandableAvatar } from "@/components/ExpandableAvatar";
 import type { RankedSessionResult } from "@/lib/championship";
 import { formatPoints } from "@/lib/championship";
@@ -42,7 +43,12 @@ export function SessionTable({ results }: SessionTableProps) {
                     />
                   )}
                   <div>
-                    <p className="font-black uppercase text-white">{result.driver.name}</p>
+                    <Link
+                      href={`/drivers/${result.driver.id}`}
+                      className="font-black uppercase text-white transition hover:text-red-200"
+                    >
+                      {result.driver.name}
+                    </Link>
                     <p className="text-xs font-bold text-zinc-500">
                       {result.jokerMultiplier === 2 ? "Joker x2" : "Standard"}
                     </p>

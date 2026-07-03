@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ExpandableAvatar } from "@/components/ExpandableAvatar";
 import type { StandingRow } from "@/lib/championship";
 import { formatPoints } from "@/lib/championship";
@@ -49,7 +50,12 @@ export function StandingsTable({ rows, compact = false }: StandingsTableProps) {
                     />
                   )}
                   <div>
-                    <p className="font-black uppercase text-white">{row.driver.name}</p>
+                    <Link
+                      href={`/drivers/${row.driver.id}`}
+                      className="font-black uppercase text-white transition hover:text-red-200"
+                    >
+                      {row.driver.name}
+                    </Link>
                     <p className="text-xs font-bold text-zinc-500">
                       {row.jokerRoundId
                         ? `Joker R${row.jokerRoundId}`
