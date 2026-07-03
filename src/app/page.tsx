@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { MetricCard } from "@/components/MetricCard";
 import { StandingsTable } from "@/components/StandingsTable";
@@ -21,78 +20,47 @@ export default function Home() {
 
   return (
     <div className="grid min-w-0 gap-6">
-      <section className="grid min-w-0 gap-4 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch">
-        <div className="min-w-0 rounded-lg border border-white/10 bg-[#0d0f15] p-5 sm:p-7">
-          <p className="text-[0.65rem] font-black uppercase tracking-[0.28em] text-red-400">
-            {championshipData.season} season
-          </p>
-          <Image
-            src="/brand/lc-karting-cup-logo.png"
-            alt="LC Karting Cup"
-            width={620}
-            height={245}
-            priority
-            className="mt-4 h-auto w-full max-w-[21rem] object-contain sm:max-w-[28rem]"
-          />
-          <p className="mt-4 max-w-xl text-sm font-medium leading-6 text-zinc-400 sm:text-base">
-            {stats.completedRounds} of {championshipData.totalRounds} rounds completed.
-            Best {championshipData.countedRounds} scores count, worst rounds drop.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-2">
-            <Link
-              href="/standings"
-              className="rounded-md bg-red-500 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-white shadow-[0_0_24px_rgba(239,68,68,0.25)] transition hover:bg-red-400"
-            >
-              Standings
-            </Link>
-            <Link
-              href="/rounds"
-              className="rounded-md border border-white/10 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-zinc-200 transition hover:border-white/25 hover:bg-white/5"
-            >
-              Rounds
-            </Link>
+      <section className="min-w-0 rounded-lg border border-red-400/20 bg-gradient-to-br from-red-500/16 to-white/[0.04] p-5 sm:p-7">
+        <p className="text-[0.65rem] font-black uppercase tracking-[0.28em] text-red-200">
+          Championship leader
+        </p>
+        <div className="mt-5 flex items-end justify-between gap-4">
+          <div>
+            <p className="text-8xl font-black leading-none text-white">
+              {leader ? leader.position : "-"}
+            </p>
+            {leader ? (
+              <h2 className="mt-2 text-3xl font-black uppercase text-white">
+                {leader.driver.name}
+              </h2>
+            ) : null}
+          </div>
+          <div className="text-right">
+            <p className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-zinc-400">
+              Counted
+            </p>
+            <p className="text-5xl font-black text-white">
+              {leader ? formatPoints(leader.countedPoints) : "0"}
+            </p>
           </div>
         </div>
-
-        <section className="min-w-0 rounded-lg border border-red-400/20 bg-gradient-to-br from-red-500/16 to-white/[0.04] p-5 sm:p-7">
-          <p className="text-[0.65rem] font-black uppercase tracking-[0.28em] text-red-200">
-            Championship leader
-          </p>
-          <div className="mt-5 flex items-end justify-between gap-4">
-            <div>
-              <p className="text-8xl font-black leading-none text-white">
-                {leader ? leader.position : "-"}
+        <div className="mt-6 grid grid-cols-3 gap-2">
+          {[
+            ["Wins", leader ? String(leader.roundWins) : "0"],
+            ["Fastest", leader ? String(leader.fastestLaps) : "0"],
+            [
+              "Joker",
+              leader ? (leader.jokerRoundId ? `R${leader.jokerRoundId}` : "Unused") : "-",
+            ],
+          ].map(([label, value]) => (
+            <div key={label} className="min-w-0 rounded-md bg-white/[0.06] p-3">
+              <p className="truncate text-[0.55rem] font-black uppercase tracking-[0.12em] text-zinc-500">
+                {label}
               </p>
-              {leader ? (
-                <h2 className="mt-2 text-3xl font-black uppercase text-white">
-                  {leader.driver.name}
-                </h2>
-              ) : null}
+              <p className="mt-2 truncate text-2xl font-black text-white">{value}</p>
             </div>
-            <div className="text-right">
-              <p className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-zinc-400">
-                Counted
-              </p>
-              <p className="text-5xl font-black text-white">
-                {leader ? formatPoints(leader.countedPoints) : "0"}
-              </p>
-            </div>
-          </div>
-          <div className="mt-6 grid grid-cols-3 gap-2">
-            {[
-              ["Wins", leader ? String(leader.roundWins) : "0"],
-              ["Fastest", leader ? String(leader.fastestLaps) : "0"],
-              ["Joker", leader ? (leader.jokerRoundId ? `R${leader.jokerRoundId}` : "Unused") : "-"],
-            ].map(([label, value]) => (
-              <div key={label} className="min-w-0 rounded-md bg-white/[0.06] p-3">
-                <p className="truncate text-[0.55rem] font-black uppercase tracking-[0.12em] text-zinc-500">
-                  {label}
-                </p>
-                <p className="mt-2 truncate text-2xl font-black text-white">{value}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+          ))}
+        </div>
       </section>
 
       <section className="grid min-w-0 gap-4 lg:grid-cols-[1.15fr_0.85fr]">
@@ -119,7 +87,7 @@ export default function Home() {
             <p className="text-xs font-black uppercase tracking-[0.22em] text-zinc-500">
               Latest round
             </p>
-          {latestRound?.winner ? (
+            {latestRound?.winner ? (
               <>
                 <h2 className="mt-2 text-3xl font-black uppercase text-white">
                   R{latestRound.round.id} {latestRound.round.venue}
