@@ -9,7 +9,7 @@ import {
   getDriverTimingProfile,
   getSessionsNewestFirst,
 } from "@/lib/driverProfiles";
-import { formatLapTime, parseLapTime } from "@/lib/championship";
+import { formatLapTime } from "@/lib/championship";
 import { cx } from "@/lib/ui";
 
 type DriverProfilePageProps = {
@@ -103,7 +103,7 @@ export default async function DriverProfilePage({ params }: DriverProfilePagePro
           </div>
           <p className="mt-4 max-w-2xl text-sm font-medium leading-6 text-zinc-400">
             {profile
-              ? `Historical timing profile built from ${profile.source.label}.`
+              ? "Historical timing profile built from indoor karting race-time emails."
               : "Profile shell is ready; historical timing data has not been loaded for this driver yet."}
           </p>
         </div>
@@ -130,10 +130,10 @@ export default async function DriverProfilePage({ params }: DriverProfilePagePro
             )}
           </section>
 
-          <section className="grid min-w-0 gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+          <section className="min-w-0">
             <div className="rounded-lg border border-red-400/20 bg-gradient-to-br from-red-500/16 to-white/[0.04] p-5">
               <p className="text-[0.65rem] font-black uppercase tracking-[0.22em] text-red-200">
-                Best Spark result
+                Best historical lap
               </p>
               <p className="mt-4 text-7xl font-black leading-none text-white">
                 {formatLapTime(stats.personalBest.lapMs)}
@@ -141,33 +141,6 @@ export default async function DriverProfilePage({ params }: DriverProfilePagePro
               <p className="mt-3 text-sm font-bold text-zinc-300">
                 {formatProfileDate(stats.personalBest.session.dateTime)} · Race{" "}
                 {stats.personalBest.session.raceNumber} · lap {stats.personalBest.lapNumber}
-              </p>
-              <p className="mt-2 text-xs font-bold uppercase tracking-[0.14em] text-zinc-500">
-                Spark message #{stats.personalBest.session.sourceId}
-              </p>
-            </div>
-
-            <div className="rounded-lg border border-white/10 bg-[#0d0f15] p-5">
-              <p className="text-[0.65rem] font-black uppercase tracking-[0.22em] text-zinc-500">
-                Source coverage
-              </p>
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.14em] text-zinc-500">
-                    Mailbox query
-                  </p>
-                  <p className="mt-1 text-sm font-bold text-white">{profile.source.query}</p>
-                </div>
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.14em] text-zinc-500">
-                    Date range
-                  </p>
-                  <p className="mt-1 text-sm font-bold text-white">{profile.source.dateRange}</p>
-                </div>
-              </div>
-              <p className="mt-4 text-sm font-medium leading-6 text-zinc-400">
-                Only race timing fields were extracted: race date, message ID, rank, best lap,
-                average lap, and lap-by-lap times for {profile.racingAlias}.
               </p>
             </div>
           </section>
@@ -178,7 +151,7 @@ export default async function DriverProfilePage({ params }: DriverProfilePagePro
                 <p className="text-xs font-black uppercase tracking-[0.22em] text-zinc-500">
                   Historical pace
                 </p>
-                <h2 className="text-2xl font-black uppercase text-white">Spark timing history</h2>
+                <h2 className="text-2xl font-black uppercase text-white">Timing history</h2>
               </div>
               <Link
                 href="/standings"
@@ -188,79 +161,57 @@ export default async function DriverProfilePage({ params }: DriverProfilePagePro
               </Link>
             </div>
 
-            <div className="grid min-w-0 gap-3">
-              {sessions.map((session) => {
-                const bestMs = parseLapTime(session.bestLap);
+            <div className="w-full max-w-full overflow-x-auto rounded-lg border border-white/10 bg-[#0d0f15]">
+              <table className="min-w-[620px] w-full border-collapse text-left text-sm">
+                <thead className="bg-white/[0.045] text-[0.62rem] font-black uppercase tracking-[0.18em] text-zinc-500">
+                  <tr>
+                    <th className="px-3 py-3">Date</th>
+                    <th className="px-3 py-3">Race</th>
+                    <th className="px-3 py-3 text-right">Rank</th>
+                    <th className="px-3 py-3 text-right">Fastest lap</th>
+                    <th className="px-3 py-3 text-right">Avg</th>
+                    <th className="px-3 py-3 text-right">Laps</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sessions.map((session) => {
+                    const isPersonalBest =
+                      session.sourceId === stats.personalBest.session.sourceId;
 
-                return (
-                  <article
-                    key={session.sourceId}
-                    className="min-w-0 rounded-lg border border-white/10 bg-[#0d0f15] p-4"
-                  >
-                    <div className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-start">
-                      <div className="min-w-0">
-                        <p className="text-[0.62rem] font-black uppercase tracking-[0.18em] text-red-300">
-                          Race {session.raceNumber}
-                        </p>
-                        <h3 className="mt-1 text-xl font-black uppercase text-white">
+                    return (
+                      <tr key={session.sourceId} className="border-t border-white/10">
+                        <td className="px-3 py-3 font-bold text-zinc-300">
                           {formatProfileDate(session.dateTime)}
-                        </h3>
-                        <p className="mt-1 text-xs font-bold text-zinc-500">
-                          {session.venue} · Spark #{session.sourceId}
-                        </p>
-                      </div>
-                      <div className="grid grid-cols-3 gap-2 text-right">
-                        <div>
-                          <p className="text-[0.55rem] font-black uppercase tracking-[0.12em] text-zinc-500">
-                            Rank
-                          </p>
-                          <p className="mt-1 text-2xl font-black text-white">P{session.rank}</p>
-                        </div>
-                        <div>
-                          <p className="text-[0.55rem] font-black uppercase tracking-[0.12em] text-zinc-500">
-                            Best
-                          </p>
-                          <p className="mt-1 text-2xl font-black text-white">{session.bestLap}</p>
-                        </div>
-                        <div>
-                          <p className="text-[0.55rem] font-black uppercase tracking-[0.12em] text-zinc-500">
-                            Avg
-                          </p>
-                          <p className="mt-1 text-2xl font-black text-white">
-                            {session.averageLap}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-4 flex flex-wrap gap-1.5">
-                      {session.laps.map((lap, index) => {
-                        const currentMs = parseLapTime(lap);
-                        const isSessionBest = currentMs !== null && currentMs === bestMs;
-                        const isPersonalBest =
-                          session.sourceId === stats.personalBest.session.sourceId &&
-                          index + 1 === stats.personalBest.lapNumber;
-
-                        return (
+                        </td>
+                        <td className="px-3 py-3 font-black uppercase text-white">
+                          Race {session.raceNumber}
+                        </td>
+                        <td className="px-3 py-3 text-right font-black text-zinc-300">
+                          P{session.rank}
+                        </td>
+                        <td className="px-3 py-3 text-right">
                           <span
-                            key={`${session.sourceId}-${index}`}
                             className={cx(
-                              "rounded-sm border px-2 py-1 text-[0.68rem] font-black tabular-nums",
+                              "rounded-sm px-2 py-1 font-black tabular-nums",
                               isPersonalBest
-                                ? "border-red-300 bg-red-500 text-white"
-                                : isSessionBest
-                                  ? "border-red-400/35 bg-red-500/12 text-red-100"
-                                  : "border-white/10 bg-white/[0.04] text-zinc-300",
+                                ? "bg-red-500 text-white shadow-[0_0_18px_rgba(239,68,68,0.3)]"
+                                : "bg-red-500/10 text-red-100",
                             )}
                           >
-                            L{index + 1} {lap}
+                            {session.bestLap}
                           </span>
-                        );
-                      })}
-                    </div>
-                  </article>
-                );
-              })}
+                        </td>
+                        <td className="px-3 py-3 text-right font-bold tabular-nums text-zinc-400">
+                          {session.averageLap}
+                        </td>
+                        <td className="px-3 py-3 text-right font-bold text-zinc-500">
+                          {session.laps.length}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           </section>
         </>
